@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: #121E32;
+  background: #F6F8FB;
+}
+
+.container-page {
+  @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+}
+
+.section {
+  @apply py-16 sm:py-24;
+}
+
+.eyebrow {
+  @apply text-xs font-bold tracking-[0.18em] text-saka-blue uppercase;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-saka-blue px-6 py-3 text-sm font-semibold text-white transition hover:bg-saka-navy shadow-sm;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-saka-navy/15 bg-white px-6 py-3 text-sm font-semibold text-saka-navy transition hover:border-saka-blue hover:text-saka-blue;
+}
+
+.card {
+  @apply rounded-xl2 border border-black/5 bg-white p-6 shadow-card transition hover:shadow-cardHover;
+}
+
+.field-label {
+  @apply mb-1.5 block text-sm font-medium text-saka-navy;
+}
+
+.field-input {
+  @apply w-full rounded-lg border border-saka-lightgray bg-white px-4 py-2.5 text-sm text-saka-navy placeholder:text-saka-gray focus:border-saka-blue focus:outline-none focus:ring-2 focus:ring-saka-blue/20;
+}
