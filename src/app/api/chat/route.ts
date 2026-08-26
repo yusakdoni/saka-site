@@ -36,20 +36,26 @@ export async function POST(req: Request) {
 
     const system = getSystemPrompt(lang);
 
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 400,
-        system,
-        messages: parsed.data.messages.map((m) => ({ role: m.role, content: m.content })),
-      }),
-    });
+    // Google Gemini API (free tier via Google AI Studio — no credit card required).
+    // Model: gemini-2.5-flash — good quality/free-quota balance for a low-traffic
+    // sales assistant. Swap to "gemini-2.5-flash-lite" if you need a higher free
+    // daily request cap and can accept slightly lower quality.
+    const model = "gemini-2.5-flash";
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: system }] },
+          contents: parsed.data.messages.map((m) => ({
+            role: m.role === "assistant" ? "model" : "user",
+            parts: [{ text: m.content }],
+          })),
+          generationConfig: { maxOutputTokens: 500, temperature: 0.6 },
+        }),
+      }
+    );
 
     if (!res.ok) {
       console.error("[/api/chat] upstream error:", res.status, await res.text().catch(() => ""));
@@ -58,7 +64,7 @@ export async function POST(req: Request) {
 
     const json = await res.json();
     const text: string =
-      json?.content?.filter((c: any) => c.type === "text").map((c: any) => c.text).join("\n") ?? "";
+      json?.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join("\n") ?? "";
 
     if (!text) {
       return NextResponse.json({ ok: true, reply: FALLBACK[lang], unavailable: true });

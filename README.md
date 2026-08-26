@@ -17,7 +17,7 @@ npm run dev
 | `RESEND_API_KEY` | For email to work | From resend.com |
 | `RESEND_FROM_EMAIL` | For email to work | Must be a verified sender/domain in Resend |
 | `SALES_EMAIL` | For email to work | Inbox that receives inquiries/leads |
-| `AI_API_KEY` | For AI assistant | Anthropic API key. Without it, the assistant shows a graceful "currently unavailable" message and the rest of the site still works. |
+| `AI_API_KEY` | For AI assistant | Google Gemini API key (free tier, no credit card — get one at https://aistudio.google.com/app/apikey). Without it, the assistant shows a graceful "currently unavailable" message and the rest of the site still works. |
 | `NEXT_PUBLIC_SITE_URL` | Recommended | Used for metadata/OG/sitemap |
 | `NEXT_PUBLIC_SALES_EMAIL` | Recommended | Public contact email shown in footer/contact page |
 
