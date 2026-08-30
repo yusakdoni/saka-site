@@ -19,17 +19,14 @@ export default function ContactPage() {
             Ceritakan Kebutuhan Bisnis Anda
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-muted md:text-lg">
-            Isi formulir di bawah dan tim kami akan menghubungi Anda untuk menjadwalkan sesi
-            konsultasi awal.
+            Isi formulir di bawah dan tim kami akan menghubungi Anda untuk menjadwalkan sesi konsultasi awal.
           </p>
         </div>
       </section>
 
       <section className="section-y">
         <div className="container-page grid gap-12 lg:grid-cols-3">
-          <div className="lg:col-span-2 rounded-xl2 border border-line bg-white p-6 md:p-8">
-            <ContactForm />
-          </div>
+          <div className="rounded-xl2 border border-line bg-white p-6 md:p-8 lg:col-span-2"><ContactForm /></div>
 
           <aside className="space-y-6">
             <div className="rounded-xl2 border border-line bg-soft p-6">
@@ -37,18 +34,11 @@ export default function ContactPage() {
               <ul className="space-y-4 text-sm text-ink">
                 <li className="flex items-start gap-3">
                   <Mail size={18} className="mt-0.5 shrink-0 text-accent" />
-                  <a href={`mailto:${site.contact.email}`} className="hover:text-accent">
-                    {site.contact.email}
-                  </a>
+                  <a href={`mailto:${site.contact.email}`} className="hover:text-accent">{site.contact.email}</a>
                 </li>
                 <li className="flex items-start gap-3">
                   <MessageCircle size={18} className="mt-0.5 shrink-0 text-accent" />
-                  <a
-                    href={`https://wa.me/${site.contact.whatsapp.replace(/[^0-9]/g, "")}`}
-                    className="hover:text-accent"
-                  >
-                    {site.contact.whatsapp}
-                  </a>
+                  <a href={`https://wa.me/${site.contact.whatsappLink}`} className="hover:text-accent">{site.contact.whatsapp}</a>
                 </li>
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="mt-0.5 shrink-0 text-accent" />
