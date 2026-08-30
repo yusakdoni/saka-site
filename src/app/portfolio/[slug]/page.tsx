@@ -33,9 +33,9 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
         </div>
       </section>
 
-      <section className="py-10 md:py-16">
+      <section className="py-8 sm:py-10 md:py-16">
         <div className="container-page">
-          <div className="relative h-[360px] overflow-hidden rounded-xl2 border border-line bg-soft shadow-[0_22px_60px_-28px_rgba(7,21,46,0.38)] sm:h-[430px] md:h-[520px]">
+          <div className="relative w-full overflow-hidden rounded-xl2 border border-line bg-soft shadow-[0_22px_60px_-28px_rgba(7,21,46,0.38)] aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9]">
             <PortfolioVisual item={item} large />
           </div>
           <p className="mt-3 text-[11px] leading-relaxed text-muted sm:text-xs">
