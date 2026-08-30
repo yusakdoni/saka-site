@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { PortfolioItem } from "@/content/portfolio";
-import PortfolioVisual from "@/components/PortfolioVisual";
+import ProjectPreview from "@/components/portfolio/ProjectPreview";
 
 export default function PortfolioCard({ item }: { item: PortfolioItem }) {
   return (
@@ -9,7 +9,7 @@ export default function PortfolioCard({ item }: { item: PortfolioItem }) {
       className="group flex flex-col overflow-hidden rounded-xl2 border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_18px_48px_-24px_rgba(26,86,219,0.30)]"
     >
       <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-soft">
-        <PortfolioVisual item={item} />
+        <ProjectPreview item={item} />
         <span className="absolute right-4 top-4 rounded-full border border-white/40 bg-white/90 px-3 py-1 text-[11px] font-semibold text-ink shadow-sm backdrop-blur">
           {item.availability}
         </span>
