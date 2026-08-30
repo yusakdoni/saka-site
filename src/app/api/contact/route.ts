@@ -1,49 +1,101 @@
-import { NextResponse } from "next/server";
-import { contactSchema } from "@/lib/validation";
-import { sendContactNotification } from "@/lib/email";
-import { rateLimit, getClientKey } from "@/lib/rate-limit";
+import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+import { isRateLimited } from "@/lib/rate-limit";
 
-export const runtime = "nodejs";
+interface ContactPayload {
+  name: string;
+  company: string;
+  email: string;
+  whatsapp: string;
+  needType: string;
+  budget: string;
+  message: string;
+  website?: string;
+  elapsedMs?: number;
+}
 
-export async function POST(req: Request) {
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validate(payload: ContactPayload): string | null {
+  if (!payload.name?.trim()) return "Nama wajib diisi.";
+  if (!payload.company?.trim()) return "Nama perusahaan wajib diisi.";
+  if (!payload.email?.trim() || !EMAIL_RE.test(payload.email)) return "Email tidak valid.";
+  if (!payload.whatsapp?.trim()) return "Nomor WhatsApp wajib diisi.";
+  if (!payload.needType?.trim()) return "Jenis kebutuhan wajib dipilih.";
+  if (!payload.message?.trim() || payload.message.trim().length < 10)
+    return "Pesan terlalu singkat. Mohon jelaskan kebutuhan Anda lebih detail.";
+  return null;
+}
+
+export async function POST(req: NextRequest) {
   try {
-    const key = getClientKey(req);
-    const { allowed } = rateLimit(`contact:${key}`, { limit: 5, windowMs: 10 * 60 * 1000 });
-    if (!allowed) {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+
+    if (isRateLimited(ip)) {
       return NextResponse.json(
-        { ok: false, error: "Too many requests. Please try again later." },
+        { error: "Terlalu banyak permintaan. Silakan coba lagi dalam beberapa saat." },
         { status: 429 }
       );
     }
 
-    const body = await req.json();
-    const parsed = contactSchema.safeParse(body);
-    if (!parsed.success) {
+    const payload = (await req.json()) as ContactPayload;
+
+    if (payload.website) {
+      return NextResponse.json({ ok: true });
+    }
+
+    if (typeof payload.elapsedMs === "number" && payload.elapsedMs < 2000) {
+      return NextResponse.json({ error: "Pengiriman terlalu cepat terdeteksi." }, { status: 400 });
+    }
+
+    const validationError = validate(payload);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
+    }
+
+    const apiKey = process.env.RESEND_API_KEY;
+    const toEmail = process.env.CONTACT_TO_EMAIL || "sales@sakasolution.com";
+    const fromEmail = process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev";
+
+    if (!apiKey) {
+      console.error("RESEND_API_KEY is not configured.");
       return NextResponse.json(
-        { ok: false, error: "Invalid form data.", issues: parsed.error.flatten() },
-        { status: 400 }
+        { error: "Layanan email belum dikonfigurasi. Silakan hubungi kami langsung melalui WhatsApp." },
+        { status: 500 }
       );
     }
-    const data = parsed.data;
 
-    // Honeypot: bots fill hidden fields.
-    if (data.website && data.website.length > 0) {
-      return NextResponse.json({ ok: true }); // silently accept, do nothing
+    const resend = new Resend(apiKey);
+
+    const { error } = await resend.emails.send({
+      from: fromEmail,
+      to: toEmail,
+      replyTo: payload.email,
+      subject: `[Lead Baru] ${payload.company} — ${payload.needType}`,
+      text: [
+        `Nama: ${payload.name}`,
+        `Perusahaan: ${payload.company}`,
+        `Email: ${payload.email}`,
+        `WhatsApp: ${payload.whatsapp}`,
+        `Jenis Kebutuhan: ${payload.needType}`,
+        `Estimasi Budget: ${payload.budget || "-"}`,
+        "",
+        "Pesan:",
+        payload.message,
+      ].join("\n"),
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json(
+        { error: "Gagal mengirim pesan. Silakan coba lagi atau hubungi kami via WhatsApp." },
+        { status: 502 }
+      );
     }
-
-    // Time-trap: form submitted too fast to be human.
-    if (typeof data.ts === "number" && Date.now() - data.ts < 1500) {
-      return NextResponse.json({ ok: true }); // silently accept, do nothing
-    }
-
-    await sendContactNotification(data);
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("[/api/contact] error:", err);
-    return NextResponse.json(
-      { ok: false, error: "Failed to send your inquiry. Please try again or email us directly." },
-      { status: 500 }
-    );
+    console.error("Contact route error:", err);
+    return NextResponse.json({ error: "Terjadi kesalahan pada server." }, { status: 500 });
   }
 }

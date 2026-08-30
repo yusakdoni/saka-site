@@ -1,74 +1,46 @@
 import type { Metadata } from "next";
-import { Montserrat, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "@/components/LanguageProvider";
-import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ChatWidget from "@/components/ChatWidget";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
+import { site } from "@/content/site";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
   variable: "--font-inter",
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://saka-solusindo.vercel.app";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(site.url),
   title: {
-    default: "SAKA Solusindo — Mitra Strategi Bisnis & Operasional",
-    template: "%s | SAKA Solusindo",
+    default: `${site.name} — ${site.tagline}`,
+    template: `%s | ${site.shortName}`,
   },
-  description:
-    "SAKA Solusindo membantu perusahaan di Indonesia menutup kesenjangan antara strategi dan eksekusi — diagnostik, desain, pilot, hingga scale-up yang berbasis data.",
-  keywords: [
-    "SAKA Solusindo",
-    "konsultan strategi bisnis",
-    "operational excellence",
-    "business consulting Indonesia",
-    "management consulting",
-  ],
-  icons: {
-    icon: "/brand/icon-blue.png",
-    apple: "/brand/icon-blue.png",
-  },
+  description: site.description,
   openGraph: {
-    type: "website",
+    title: site.name,
+    description: site.description,
+    url: site.url,
+    siteName: site.name,
     locale: "id_ID",
-    url: siteUrl,
-    siteName: "SAKA Solusindo",
-    title: "SAKA Solusindo — Mitra Strategi Bisnis & Operasional",
-    description:
-      "Firma konsultasi independen yang membantu perusahaan di Indonesia menutup kesenjangan antara strategi dan eksekusi.",
-    images: [{ url: "/brand/social-avatar.png", width: 1080, height: 1080 }],
+    type: "website",
   },
   twitter: {
-    card: "summary",
-    title: "SAKA Solusindo",
-    description: "Mitra strategi bisnis dan operasional untuk perusahaan di Indonesia.",
-    images: ["/brand/social-avatar.png"],
+    card: "summary_large_image",
+    title: site.name,
+    description: site.description,
   },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${montserrat.variable} ${inter.variable}`}>
-      <body className="font-body antialiased">
-        <LanguageProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <ChatWidget />
-        </LanguageProvider>
+    <html lang="id" className={inter.variable}>
+      <body className="flex min-h-screen flex-col font-sans">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

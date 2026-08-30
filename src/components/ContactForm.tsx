@@ -1,126 +1,145 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { useLang } from "./LanguageProvider";
-import { services } from "@/content/services";
-import { industries } from "@/content/industries";
+import { useRef, useState, type FormEvent } from "react";
+import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 
-type Status = "idle" | "submitting" | "success" | "error";
+type Status = "idle" | "loading" | "success" | "error";
+
+const needTypes = [
+  "Sistem ERP",
+  "Web Development",
+  "Business Intelligence",
+  "AI & Automation",
+  "System Integration",
+  "IT Consulting",
+  "Managed IT Services",
+  "IT Procurement",
+  "Lainnya",
+];
+
+const budgetRanges = ["< Rp 25 juta", "Rp 25 juta – Rp 100 juta", "Rp 100 juta – Rp 300 juta", "> Rp 300 juta", "Belum yakin"];
 
 export default function ContactForm() {
-  const { t, lang } = useLang();
   const [status, setStatus] = useState<Status>("idle");
-  const [errorMsg, setErrorMsg] = useState<string>("");
-  const mountedAt = useRef(Date.now());
+  const [errorMessage, setErrorMessage] = useState("");
+  const formStartRef = useRef<number>(Date.now());
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (status === "submitting") return;
-    setStatus("submitting");
-    setErrorMsg("");
+    setStatus("loading");
+    setErrorMessage("");
 
     const form = e.currentTarget;
-    const fd = new FormData(form);
+    const data = new FormData(form);
+    const elapsedMs = Date.now() - formStartRef.current;
+    if (elapsedMs < 2000) {
+      setStatus("error");
+      setErrorMessage("Pengiriman terlalu cepat terdeteksi. Silakan coba lagi.");
+      return;
+    }
+
     const payload = {
-      name: String(fd.get("name") || ""),
-      company: String(fd.get("company") || ""),
-      email: String(fd.get("email") || ""),
-      phone: String(fd.get("phone") || ""),
-      industry: String(fd.get("industry") || ""),
-      service: String(fd.get("service") || ""),
-      message: String(fd.get("message") || ""),
-      website: String(fd.get("website") || ""),
-      ts: mountedAt.current,
-      source: "work-with-us",
-      lang,
+      name: String(data.get("name") || ""),
+      company: String(data.get("company") || ""),
+      email: String(data.get("email") || ""),
+      whatsapp: String(data.get("whatsapp") || ""),
+      needType: String(data.get("needType") || ""),
+      budget: String(data.get("budget") || ""),
+      message: String(data.get("message") || ""),
+      website: String(data.get("website") || ""),
+      elapsedMs,
     };
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || "Failed");
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error || "Terjadi kesalahan saat mengirim pesan.");
+      }
+
       setStatus("success");
       form.reset();
+      formStartRef.current = Date.now();
     } catch (err) {
       setStatus("error");
-      setErrorMsg(t.contact.form.error);
+      setErrorMessage(err instanceof Error ? err.message : "Terjadi kesalahan saat mengirim pesan.");
     }
   }
 
   if (status === "success") {
     return (
-      <div className="card border-saka-blue/20 bg-saka-blue/5 text-center">
-        <p className="font-head text-lg font-bold text-saka-navy">✓</p>
-        <p className="mt-2 text-sm text-saka-navy">{t.contact.form.success}</p>
+      <div className="flex flex-col items-center gap-3 rounded-xl2 border border-line bg-soft p-10 text-center">
+        <CheckCircle2 className="text-accent" size={40} />
+        <h3 className="text-lg font-semibold text-ink">Pesan Anda telah terkirim</h3>
+        <p className="max-w-sm text-sm text-muted">
+          Terima kasih. Tim kami akan menghubungi Anda dalam 1–2 hari kerja untuk menjadwalkan konsultasi awal.
+        </p>
+        <button type="button" onClick={() => setStatus("idle")} className="mt-2 text-sm font-medium text-accent hover:underline">
+          Kirim pesan lain
+        </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="card space-y-4">
-      {/* Honeypot field — hidden from real users, bots tend to fill it */}
+    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div className="hidden" aria-hidden="true">
         <label htmlFor="website">Website</label>
-        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="field-label" htmlFor="name">{t.contact.form.name} *</label>
-          <input className="field-input" id="name" name="name" required minLength={2} maxLength={120} />
-        </div>
-        <div>
-          <label className="field-label" htmlFor="company">{t.contact.form.company} *</label>
-          <input className="field-input" id="company" name="company" required minLength={2} maxLength={160} />
-        </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="field-label" htmlFor="email">{t.contact.form.email} *</label>
-          <input className="field-input" id="email" name="email" type="email" required maxLength={160} />
-        </div>
-        <div>
-          <label className="field-label" htmlFor="phone">{t.contact.form.phone} *</label>
-          <input className="field-input" id="phone" name="phone" required minLength={6} maxLength={40} />
-        </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="field-label" htmlFor="industry">{t.contact.form.industry}</label>
-          <select className="field-input" id="industry" name="industry" defaultValue="">
-            <option value="">{t.contact.form.selectPlaceholder}</option>
-            {industries.map((i) => (
-              <option key={i.slug} value={i.name[lang]}>{i.name[lang]}</option>
-            ))}
+      <div className="grid gap-5 md:grid-cols-2">
+        <Field label="Nama Lengkap" htmlFor="name"><input id="name" name="name" type="text" required className="input" placeholder="Nama Anda" /></Field>
+        <Field label="Perusahaan" htmlFor="company"><input id="company" name="company" type="text" required className="input" placeholder="Nama perusahaan" /></Field>
+        <Field label="Email" htmlFor="email"><input id="email" name="email" type="email" required className="input" placeholder="nama@perusahaan.com" /></Field>
+        <Field label="Nomor WhatsApp" htmlFor="whatsapp"><input id="whatsapp" name="whatsapp" type="tel" required className="input" placeholder="08xx-xxxx-xxxx" /></Field>
+        <Field label="Jenis Kebutuhan" htmlFor="needType">
+          <select id="needType" name="needType" required defaultValue="" className="input">
+            <option value="" disabled>Pilih jenis kebutuhan</option>
+            {needTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-        </div>
-        <div>
-          <label className="field-label" htmlFor="service">{t.contact.form.service}</label>
-          <select className="field-input" id="service" name="service" defaultValue="">
-            <option value="">{t.contact.form.selectPlaceholder}</option>
-            {services.map((s) => (
-              <option key={s.slug} value={s.name[lang]}>{s.name[lang]}</option>
-            ))}
+        </Field>
+        <Field label="Estimasi Budget" htmlFor="budget">
+          <select id="budget" name="budget" defaultValue="" className="input">
+            <option value="" disabled>Pilih estimasi budget</option>
+            {budgetRanges.map((b) => <option key={b} value={b}>{b}</option>)}
           </select>
+        </Field>
+      </div>
+
+      <Field label="Pesan / Kebutuhan" htmlFor="message">
+        <textarea id="message" name="message" required rows={5} className="input resize-none" placeholder="Ceritakan tantangan bisnis atau kebutuhan sistem Anda" />
+      </Field>
+
+      {status === "error" && (
+        <div className="flex items-start gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          <AlertCircle size={18} className="mt-0.5 shrink-0" />
+          <span>{errorMessage}</span>
         </div>
-      </div>
+      )}
 
-      <div>
-        <label className="field-label" htmlFor="message">{t.contact.form.message} *</label>
-        <textarea className="field-input" id="message" name="message" rows={4} required minLength={10} maxLength={3000} />
-      </div>
-
-      {status === "error" && <p className="text-sm text-red-600">{errorMsg}</p>}
-
-      <button type="submit" className="btn-primary w-full sm:w-auto" disabled={status === "submitting"}>
-        {status === "submitting" ? t.contact.form.submitting : t.contact.form.submit}
+      <button type="submit" disabled={status === "loading"} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-cobalt disabled:opacity-60 md:w-auto">
+        {status === "loading" ? <><Loader2 size={18} className="animate-spin" />Mengirim...</> : "Kirim Pesan"}
       </button>
+
+      <style jsx>{`
+        .input { width: 100%; border-radius: 0.5rem; border: 1px solid #e4e7ec; background: #fff; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: #101828; }
+        .input:focus { outline: none; border-color: #1a56db; box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12); }
+      `}</style>
     </form>
+  );
+}
+
+function Field({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-medium text-ink">{label}</label>
+      {children}
+    </div>
   );
 }

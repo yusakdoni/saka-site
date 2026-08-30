@@ -5,25 +5,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        saka: {
-          blue: "#1E46A5",
-          navy: "#121E32",
-          black: "#000000",
-          gray: "#6B7280",
-          lightgray: "#E5E7EB",
-          bg: "#F6F8FB",
-        },
+        accent: "#1A56DB",
+        cobalt: "#0052CC",
+        navy: "#07152E",
+        ink: "#101828",
+        muted: "#667085",
+        soft: "#F7F9FC",
+        line: "#E4E7EC",
       },
       fontFamily: {
-        head: ["var(--font-montserrat)", "sans-serif"],
-        body: ["var(--font-inter)", "sans-serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
-      boxShadow: {
-        card: "0 1px 2px rgba(18,30,50,0.06), 0 4px 16px rgba(18,30,50,0.06)",
-        cardHover: "0 8px 28px rgba(18,30,50,0.12)",
+      maxWidth: {
+        content: "1200px",
       },
       borderRadius: {
-        xl2: "1.25rem",
+        xl2: "1rem",
       },
     },
   },

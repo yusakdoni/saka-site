@@ -1,43 +1,24 @@
 // Simple in-memory sliding-window rate limiter.
-// Good enough for a low/medium traffic single-instance-friendly deployment
-// without adding an external dependency (Redis/Upstash). Resets on cold start,
-// which is an acceptable tradeoff for a "free / simple" setup.
+// Note: this resets on every serverless cold start / deploy, and is per-instance
+// only. That's an accepted tradeoff for a low-traffic contact form that avoids
+// the operational cost of Redis. If traffic grows significantly, replace with
+// a durable store (e.g. Upstash Redis).
 
-type Bucket = { count: number; windowStart: number };
+const WINDOW_MS = 60_000;
+const MAX_REQUESTS = 5;
 
-const buckets = new Map<string, Bucket>();
+const hits = new Map<string, number[]>();
 
-export function rateLimit(
-  key: string,
-  { limit, windowMs }: { limit: number; windowMs: number }
-): { allowed: boolean; remaining: number } {
+export function isRateLimited(key: string): boolean {
   const now = Date.now();
-  const bucket = buckets.get(key);
+  const timestamps = (hits.get(key) || []).filter((t) => now - t < WINDOW_MS);
 
-  if (!bucket || now - bucket.windowStart > windowMs) {
-    buckets.set(key, { count: 1, windowStart: now });
-    return { allowed: true, remaining: limit - 1 };
+  if (timestamps.length >= MAX_REQUESTS) {
+    hits.set(key, timestamps);
+    return true;
   }
 
-  if (bucket.count >= limit) {
-    return { allowed: false, remaining: 0 };
-  }
-
-  bucket.count += 1;
-  return { allowed: true, remaining: limit - bucket.count };
-}
-
-// Periodically clear old buckets so the map doesn't grow forever.
-if (typeof setInterval !== "undefined") {
-  setInterval(() => {
-    const now = Date.now();
-    for (const [key, bucket] of buckets.entries()) {
-      if (now - bucket.windowStart > 10 * 60 * 1000) buckets.delete(key);
-    }
-  }, 5 * 60 * 1000).unref?.();
-}
-
-export function getClientKey(req: Request): string {
-  const fwd = req.headers.get("x-forwarded-for");
-  return fwd ? fwd.split(",")[0].trim() : "unknown";
+  timestamps.push(now);
+  hits.set(key, timestamps);
+  return false;
 }
