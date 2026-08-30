@@ -11,9 +11,9 @@ export const site = {
     "SAKA Ananta Solusindo membantu perusahaan membangun sistem terintegrasi, berbasis data dan teknologi untuk meningkatkan efisiensi dan mendorong pertumbuhan bisnis.",
   locale: "id-ID",
   contact: {
-    email: "sales@sakasolution.com", // PLACEHOLDER — replace with verified inbox
-    whatsapp: "+62 8XX-XXXX-XXXX", // PLACEHOLDER — replace with verified number
-    address: "Jakarta, Indonesia", // PLACEHOLDER — replace with verified address
+    email: "contact@sakasolution.com",
+    whatsapp: "08113344410",
+    address: "Tangerang, Indonesia",
   },
   socials: {
     linkedin: "https://www.linkedin.com/company/sakasolution", // PLACEHOLDER
