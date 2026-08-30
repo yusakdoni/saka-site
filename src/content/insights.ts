@@ -11,6 +11,7 @@ export interface Article {
   excerpt: string;
   content: string[];
   publishedAt: string;
+  image: string;
 }
 
 export const articles: Article[] = [
@@ -27,6 +28,7 @@ export const articles: Article[] = [
       "Sebelum membangun ERP, langkah pertama yang lebih murah dan cepat adalah memetakan proses bisnis Anda saat ini. Dari situ, baru bisa ditentukan modul apa yang benar-benar dibutuhkan.",
     ],
     publishedAt: "2026-01-15",
+    image: "/images/insights/kapan-bisnis-butuh-erp.svg",
   },
   {
     slug: "dashboard-vs-laporan-manual",
@@ -40,6 +42,7 @@ export const articles: Article[] = [
       "Laporan manual masih relevan untuk kebutuhan ad-hoc, tetapi untuk metrik yang dipantau rutin — seperti penjualan harian atau status inventori — dashboard otomatis jauh lebih efisien.",
     ],
     publishedAt: "2026-01-22",
+    image: "/images/insights/dashboard-vs-laporan-manual.svg",
   },
   {
     slug: "mulai-otomasi-tanpa-tim-teknis-besar",
@@ -53,6 +56,7 @@ export const articles: Article[] = [
       "Yang lebih penting dari alat adalah kejelasan alur kerja. Petakan dulu langkah-langkah proses secara manual sebelum menentukan bagian mana yang bisa diotomasi.",
     ],
     publishedAt: "2026-02-03",
+    image: "/images/insights/mulai-otomasi-tanpa-tim-teknis-besar.svg",
   },
   {
     slug: "tanda-website-tidak-menghasilkan-lead",
@@ -67,6 +71,7 @@ export const articles: Article[] = [
       "Tanda kelima adalah tidak adanya proses tindak lanjut setelah lead masuk — formulir terisi tapi tidak ada yang menghubungi dalam waktu wajar.",
     ],
     publishedAt: "2026-02-10",
+    image: "/images/insights/tanda-website-tidak-menghasilkan-lead.svg",
   },
 ];
 
