@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { PortfolioItem } from "@/content/portfolio";
 
@@ -5,10 +6,17 @@ export default function PortfolioCard({ item }: { item: PortfolioItem }) {
   return (
     <Link
       href={`/portfolio/${item.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl2 border border-line bg-white transition-all hover:border-accent/40 hover:shadow-[0_8px_30px_-12px_rgba(26,86,219,0.25)]"
+      className="group flex flex-col overflow-hidden rounded-xl2 border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_14px_36px_-18px_rgba(26,86,219,0.28)]"
     >
-      <div className="flex aspect-[16/10] items-center justify-center bg-soft text-xs font-medium text-muted">
-        Gambar proyek — {item.image.split("/").pop()}
+      <div className="relative aspect-[16/10] overflow-hidden bg-soft">
+        <Image
+          src={item.image}
+          alt={item.title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy/15 via-transparent to-transparent" />
       </div>
       <div className="flex flex-1 flex-col p-6">
         <span className="mb-2 text-xs font-semibold uppercase tracking-wide text-accent">{item.industry}</span>
