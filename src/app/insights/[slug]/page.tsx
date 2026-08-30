@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -35,7 +36,17 @@ export default function ArticleDetailPage({ params }: { params: { slug: string }
           {article.category}
         </span>
         <h1 className="mb-4 text-3xl font-bold tracking-tight text-ink md:text-4xl">{article.title}</h1>
-        <p className="mb-10 text-sm text-muted">{date}</p>
+        <p className="mb-8 text-sm text-muted">{date}</p>
+        <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-xl2 border border-line bg-soft">
+          <Image
+            src={article.image}
+            alt={article.title}
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 768px"
+            className="object-cover"
+          />
+        </div>
         <div className="space-y-5">
           {article.content.map((paragraph, i) => (
             <p key={i} className="leading-relaxed text-ink/90">
