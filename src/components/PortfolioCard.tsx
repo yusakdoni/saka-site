@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { PortfolioItem } from "@/content/portfolio";
+import PortfolioVisual from "@/components/PortfolioVisual";
 
 export default function PortfolioCard({ item }: { item: PortfolioItem }) {
   return (
@@ -9,15 +9,7 @@ export default function PortfolioCard({ item }: { item: PortfolioItem }) {
       className="group flex flex-col overflow-hidden rounded-xl2 border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_14px_36px_-18px_rgba(26,86,219,0.28)]"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-soft">
-        <Image
-          src={item.image}
-          alt={`${item.title} — ${item.client}`}
-          fill
-          unoptimized
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.025]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/20 via-transparent to-transparent" />
+        <PortfolioVisual item={item} />
         <span className="absolute right-4 top-4 rounded-full border border-white/40 bg-white/90 px-3 py-1 text-[11px] font-semibold text-ink backdrop-blur">
           {item.availability}
         </span>
