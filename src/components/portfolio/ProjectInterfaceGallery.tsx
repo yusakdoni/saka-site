@@ -1,10 +1,11 @@
+import type { ReactNode } from "react";
 import type { PortfolioItem } from "@/content/portfolio";
 import SakaSitePreview from "./SakaSitePreview";
 import GcnSitePreview from "./GcnSitePreview";
 import GcnErpPreview from "./GcnErpPreview";
 import DbiErpPreview from "./DbiErpPreview";
 
-type GalleryItem={label:string;node:React.ReactNode};
+type GalleryItem={label:string;node:ReactNode};
 
 function items(item:PortfolioItem):GalleryItem[]{
  if(item.slug==="gcn-corporate-website") return [
