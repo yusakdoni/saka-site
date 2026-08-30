@@ -14,8 +14,7 @@ export interface PortfolioItem {
 // NOTE: All entries below are illustrative/draft placeholders describing the
 // TYPE of work SAKA delivers. Per the no-fake-content policy, none of these
 // carry fabricated client names or performance numbers. Replace with real,
-// approved case studies (e.g. Dermabeauty Indonesia, Gega Cahaya Nusantara)
-// once publication approval and verified results are available.
+// approved case studies once publication approval and verified results are available.
 export const portfolio: PortfolioItem[] = [
   {
     slug: "erp-manajemen-operasional",
@@ -28,7 +27,7 @@ export const portfolio: PortfolioItem[] = [
     modules: ["Inventori", "Procurement", "Dashboard Manajemen"],
     result: "Studi kasus dalam proses dokumentasi — akan dipublikasikan setelah persetujuan klien.",
     technology: ["Next.js", "PostgreSQL", "Tailwind CSS"],
-    image: "/images/placeholders/portfolio-erp.jpg",
+    image: "/images/portfolio/erp-manajemen-operasional.svg",
     status: "draft",
   },
   {
@@ -41,7 +40,7 @@ export const portfolio: PortfolioItem[] = [
     modules: ["Data Pipeline", "Dashboard KPI", "Laporan Terjadwal"],
     result: "Studi kasus dalam proses dokumentasi — akan dipublikasikan setelah persetujuan klien.",
     technology: ["Next.js", "Recharts", "PostgreSQL"],
-    image: "/images/placeholders/portfolio-dashboard.jpg",
+    image: "/images/portfolio/dashboard-eksekutif.svg",
     status: "draft",
   },
   {
@@ -54,7 +53,7 @@ export const portfolio: PortfolioItem[] = [
     modules: ["Corporate Website", "Formulir Lead", "AI Sales Assistant"],
     result: "Studi kasus dalam proses dokumentasi — akan dipublikasikan setelah persetujuan klien.",
     technology: ["Next.js", "TypeScript", "Resend"],
-    image: "/images/placeholders/portfolio-website.jpg",
+    image: "/images/portfolio/website-korporat-lead-generation.svg",
     status: "draft",
   },
   {
@@ -66,7 +65,7 @@ export const portfolio: PortfolioItem[] = [
     modules: ["CRM", "WhatsApp Automation", "Lead Scoring"],
     result: "Studi kasus dalam proses dokumentasi — akan dipublikasikan setelah persetujuan klien.",
     technology: ["Next.js", "WhatsApp API", "AI Agent"],
-    image: "/images/placeholders/portfolio-crm.jpg",
+    image: "/images/portfolio/crm-otomasi-penjualan.svg",
     status: "draft",
   },
 ];
