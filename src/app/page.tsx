@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { services } from "@/content/services";
@@ -31,8 +32,16 @@ export default function HomePage() {
               <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-full border border-line px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent">Hubungi Kami</Link>
             </div>
           </div>
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl2 border border-line bg-soft">
-            <div className="flex h-full w-full items-center justify-center text-center text-sm text-muted">Gambar hero — lihat ASSET_REQUIREMENTS.md<br />(foto tim/operasional bisnis premium)</div>
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl2 border border-line bg-soft shadow-[0_24px_70px_-36px_rgba(15,42,86,0.45)]">
+            <Image
+              src="/images/hero/home-hero.svg"
+              alt="Visual bisnis modern dan transformasi digital SAKA Solusindo"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-tr from-navy/10 via-transparent to-white/10" />
           </div>
         </div>
       </section>
