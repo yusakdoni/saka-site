@@ -38,6 +38,13 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
           <div className="relative aspect-[16/8] overflow-hidden rounded-xl2 border border-line bg-soft shadow-[0_18px_50px_-30px_rgba(7,21,46,0.35)] md:aspect-[16/7]">
             <PortfolioVisual item={item} large />
           </div>
+          <div className="mt-4 rounded-lg border border-line bg-soft px-4 py-3">
+            <p className="text-xs leading-relaxed text-muted">
+              <strong className="text-ink">Data demonstrasi:</strong> seluruh angka, KPI, transaksi, customer, project,
+              inventory, sales, finance, dan informasi operasional yang terlihat pada mockup di atas merupakan data fiktif.
+              Visual ini digunakan untuk menunjukkan struktur dan kapabilitas sistem tanpa membuka data rahasia perusahaan.
+            </p>
+          </div>
         </div>
       </section>
 
