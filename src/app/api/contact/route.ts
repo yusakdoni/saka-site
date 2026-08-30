@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     const { error } = await resend.emails.send({
       from: fromEmail,
       to: toEmail,
-      replyTo: payload.email,
+      reply_to: payload.email,
       subject: `[Lead Baru] ${payload.company} — ${payload.needType}`,
       text: [
         `Nama: ${payload.name}`,
