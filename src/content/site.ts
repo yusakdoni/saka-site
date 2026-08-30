@@ -13,6 +13,7 @@ export const site = {
   contact: {
     email: "contact@sakasolution.com",
     whatsapp: "08113344410",
+    whatsappLink: "628113344410",
     address: "Tangerang, Indonesia",
   },
   socials: {
