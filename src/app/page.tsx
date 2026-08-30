@@ -38,6 +38,7 @@ export default function HomePage() {
               alt="Visual bisnis modern dan transformasi digital SAKA Solusindo"
               fill
               priority
+              unoptimized
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
             />
