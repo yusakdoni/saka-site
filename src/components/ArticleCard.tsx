@@ -19,6 +19,7 @@ export default function ArticleCard({ article }: { article: Article }) {
           src={article.image}
           alt={article.title}
           fill
+          unoptimized
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
