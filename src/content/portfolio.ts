@@ -9,37 +9,34 @@ export interface PortfolioItem {
   modules: string[];
   result: string;
   technology: string[];
-  image: string;
   liveUrl?: string;
   availability: "Live" | "Demo" | "Internal";
   status: "draft" | "published";
 }
 
-// Real projects built and maintained by SAKA / the SAKA team.
-// Results are intentionally qualitative unless a verified metric is available.
+// Real implemented projects. Quantitative claims are omitted unless verified.
 export const portfolio: PortfolioItem[] = [
   {
     slug: "saka-digital-platform-internal-erp",
-    title: "SAKA Digital Platform & Internal ERP",
+    title: "SAKA Digital Platform",
     client: "SAKA Solusindo",
     industry: "Technology / Professional Services",
-    projectType: "Corporate Website + Internal Business System",
+    projectType: "Corporate Website & Digital Lead Platform",
     problem:
-      "SAKA membutuhkan fondasi digital yang dapat menjelaskan layanan secara profesional, menangkap calon klien, mempublikasikan insight, dan menjadi basis pengembangan sistem operasional internal.",
+      "SAKA membutuhkan digital presence yang dapat menjelaskan layanan secara profesional, mempublikasikan portfolio dan insight, serta menangkap calon klien melalui jalur inquiry yang jelas.",
     solution:
-      "Membangun website corporate SAKA dengan arsitektur konten terpusat, portfolio, insights, contact lead flow, integrasi email, AI sales assistant, serta workspace ERP/internal management yang dikembangkan sebagai bagian dari ekosistem operasional SAKA.",
+      "Membangun website corporate SAKA dengan service catalogue, real-project portfolio, insights, contact lead flow, integrasi email melalui Resend, dan AI sales assistant sebagai bagian dari digital lead experience.",
     modules: [
       "Corporate Website",
-      "Services & Portfolio",
+      "Services",
+      "Real Project Portfolio",
       "Insights",
-      "Lead Capture",
+      "Lead / Contact Flow",
       "AI Sales Assistant",
-      "Internal ERP Workspace",
     ],
     result:
-      "SAKA memiliki satu ekosistem digital untuk membangun kredibilitas, menerima inquiry, mempublikasikan knowledge content, dan mengembangkan proses operasional internal secara bertahap dalam satu arah sistem yang konsisten.",
+      "SAKA memiliki digital platform live untuk membangun kredibilitas, menjelaskan solusi, menerima inquiry, dan mempublikasikan knowledge content dalam satu pengalaman yang konsisten.",
     technology: ["Next.js", "TypeScript", "Tailwind CSS", "Resend", "AI API"],
-    image: "/images/portfolio/saka-digital-ecosystem.svg",
     liveUrl: "https://www.sakasolution.com",
     availability: "Live",
     status: "published",
@@ -51,14 +48,13 @@ export const portfolio: PortfolioItem[] = [
     industry: "General Trading / Supply / Construction",
     projectType: "Corporate Website",
     problem:
-      "GCN membutuhkan website perusahaan yang mampu menjelaskan kapabilitas bisnis secara lebih kredibel dan memberi jalur yang jelas bagi calon buyer untuk menghubungi tim melalui inquiry atau RFQ.",
+      "GCN membutuhkan website perusahaan yang mampu menjelaskan kapabilitas supply, trading, dan konstruksi secara kredibel serta memberi jalur yang jelas untuk inquiry dan RFQ.",
     solution:
-      "Membangun website corporate modern yang memusatkan profil perusahaan, layanan supply/trading/construction, informasi bisnis, dan contact journey yang terhubung ke kanal penjualan.",
-    modules: ["Corporate Profile", "Service Pages", "RFQ / Inquiry", "Contact Form", "Responsive UI"],
+      "Membangun corporate website bilingual dengan actual service structure, company profile, project/industry content, contact journey, RFQ flow, dan responsive navigation yang terhubung ke proses sales.",
+    modules: ["Corporate Profile", "Services", "Our Work", "Client Impact", "RFQ", "Contact", "Responsive UI"],
     result:
-      "Website menjadi digital front door GCN untuk memperkuat company credibility dan mempermudah calon buyer memahami layanan serta memulai percakapan bisnis.",
+      "Website live menjadi digital front door GCN untuk menjelaskan kapabilitas bisnis dan memudahkan calon buyer memulai permintaan penawaran.",
     technology: ["Next.js 14", "React", "TypeScript", "Tailwind CSS", "Resend"],
-    image: "/images/portfolio/gcn-corporate-website.svg",
     liveUrl: "https://www.gcnusantara.com",
     availability: "Live",
     status: "published",
@@ -70,23 +66,22 @@ export const portfolio: PortfolioItem[] = [
     industry: "General Trading / Project Business",
     projectType: "ERP / Management Information System",
     problem:
-      "Aktivitas komersial, procurement, project execution, invoice, payment, approval, dan laporan keuangan membutuhkan satu sistem agar proses order-to-cash dan procure-to-pay dapat dikontrol secara menyeluruh.",
+      "Aktivitas komersial, procurement, project execution, invoice, payment, approval, dan financial control membutuhkan satu sistem agar order-to-cash dan procure-to-pay dapat dikontrol secara menyeluruh.",
     solution:
-      "Membangun ERP terintegrasi dengan modul Sales & Commercial, Project Execution, Procurement, Money & Cashflow, Financial Control, RBAC, approval workflow, audit trail, serta accounting engine double-entry dengan laporan yang dihitung dari ledger.",
+      "Membangun role-aware ERP dengan Data Intelligence, module launcher, Sales, Operations & Projects, Finance & Accounting, Documents & Archive, RBAC, approval workflow, audit trail, dan accounting control.",
     modules: [
-      "Leads & Opportunities",
-      "Quotation & Costing",
-      "Procurement & PO",
-      "Projects & Delivery",
-      "AR / AP & Cashflow",
-      "Journal & General Ledger",
-      "P&L / Balance Sheet / Cash Flow",
+      "Data Intelligence",
+      "Sales",
+      "Operations & Projects",
+      "Finance & Accounting",
+      "Documents & Archive",
+      "Leads & Quotations",
+      "Procurement & Delivery",
       "RBAC & Audit Trail",
     ],
     result:
-      "GCN memiliki satu management system yang menghubungkan proses komersial sampai financial control, termasuk project P&L, approval, dan auditability tanpa mengandalkan KPI keuangan hardcoded.",
+      "GCN memiliki management system live yang menyatukan business modules, role-aware decision support, operational workflow, dan financial control dalam satu workspace.",
     technology: ["React 19", "FastAPI", "MongoDB", "Recharts", "JWT / RBAC"],
-    image: "/images/portfolio/gcn-management-system.svg",
     liveUrl: "https://mis.gcnusantara.com",
     availability: "Live",
     status: "published",
@@ -100,23 +95,22 @@ export const portfolio: PortfolioItem[] = [
     problem:
       "Bisnis maklon kosmetik membutuhkan visibilitas lintas proses dari lead dan product development sampai procurement, inventory, produksi, quality control, regulatory, finance, accounting, dan return/replacement.",
     solution:
-      "Membangun ERP/MIS modular untuk CRM & Leads, Customers, Brands, Products, NPD/R&D, Samples, Quotation & Sales Order, Procurement, Inventory berbasis transaksi, Production, QC, Regulatory, AR/AP, Accounting, Projects, Documents, RBAC, delegation, audit, serta workflow Return & Replacement yang mencegah double counting revenue.",
+      "Membangun ERP/MIS modular dengan Executive Business Command Center, department intelligence, Penjualan, Pembelian, Persediaan, Produksi, QC, R&D, Regulatory, Finance & Accounting, LMS, Projects, RBAC, delegation, audit, dan return/replacement control.",
     modules: [
+      "Data Intelligence",
       "CRM & Sales",
       "NPD / R&D & Samples",
-      "Procurement & Suppliers",
-      "Inventory",
-      "Production & QC",
+      "Procurement",
+      "Inventory & Supply Chain",
+      "Production",
+      "Quality Control",
       "Regulatory",
-      "Finance AR/AP",
-      "Accounting",
+      "Finance & Accounting",
       "Return & Replacement",
-      "RBAC & Audit",
     ],
     result:
-      "Versi MVP telah dideploy sebagai environment evaluasi untuk memperlihatkan bagaimana data lintas departemen dapat disatukan dalam satu management system, termasuk kontrol replacement tanpa menambah revenue penjualan secara ganda.",
+      "Versi MVP telah dideploy sebagai evaluation environment untuk memperlihatkan bagaimana data dan workflow lintas departemen dapat disatukan dalam satu management system.",
     technology: ["React 19", "FastAPI", "MongoDB", "Recharts", "Zod", "JWT / RBAC"],
-    image: "/images/portfolio/dbi-erp-mis.svg",
     liveUrl: "https://dbi.sakasolution.com",
     availability: "Demo",
     status: "published",
