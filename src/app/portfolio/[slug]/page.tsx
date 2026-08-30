@@ -22,33 +22,29 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
   return (
     <>
       <section className="border-b border-line bg-soft">
-        <div className="container-page py-16 md:py-24">
-          <div className="mb-5 flex flex-wrap items-center gap-3">
+        <div className="container-page py-10 sm:py-14 md:py-20">
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-accent">Real Project</span>
             <span className="rounded-full border border-line bg-white px-3 py-1 text-xs font-medium text-muted">{item.availability}</span>
           </div>
           <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent">{item.client}</p>
-          <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-ink md:text-5xl">{item.title}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">{item.projectType} · {item.industry}</p>
+          <h1 className="max-w-3xl text-3xl font-bold tracking-tight text-ink sm:text-4xl md:text-5xl">{item.title}</h1>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted md:text-lg">{item.projectType} · {item.industry}</p>
         </div>
       </section>
 
-      <section className="section-y pb-0">
+      <section className="py-10 md:py-16">
         <div className="container-page">
-          <div className="relative aspect-[16/8] overflow-hidden rounded-xl2 border border-line bg-soft shadow-[0_18px_50px_-30px_rgba(7,21,46,0.35)] md:aspect-[16/7]">
+          <div className="relative h-[360px] overflow-hidden rounded-xl2 border border-line bg-soft shadow-[0_22px_60px_-28px_rgba(7,21,46,0.38)] sm:h-[430px] md:h-[520px]">
             <PortfolioVisual item={item} large />
           </div>
-          <div className="mt-4 rounded-lg border border-line bg-soft px-4 py-3">
-            <p className="text-xs leading-relaxed text-muted">
-              <strong className="text-ink">Data demonstrasi:</strong> seluruh angka, KPI, transaksi, customer, project,
-              inventory, sales, finance, dan informasi operasional yang terlihat pada mockup di atas merupakan data fiktif.
-              Visual ini digunakan untuk menunjukkan struktur dan kapabilitas sistem tanpa membuka data rahasia perusahaan.
-            </p>
-          </div>
+          <p className="mt-3 text-[11px] leading-relaxed text-muted sm:text-xs">
+            <strong className="text-ink">Data demonstrasi:</strong> seluruh angka, KPI, transaksi, customer, project, inventory, sales, finance, dan informasi operasional pada mockup merupakan data fiktif untuk keperluan demonstrasi.
+          </p>
         </div>
       </section>
 
-      <section className="section-y">
+      <section className="section-y pt-6 md:pt-10">
         <div className="container-page grid gap-12 lg:grid-cols-3">
           <div className="space-y-10 lg:col-span-2">
             <div><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-accent">01 · Challenge</p><h2 className="mb-3 text-xl font-semibold text-ink">Tantangan</h2><p className="leading-relaxed text-muted">{item.problem}</p></div>
