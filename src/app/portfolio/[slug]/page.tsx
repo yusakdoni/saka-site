@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
@@ -32,49 +33,39 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
         </div>
       </section>
 
+      <section className="section-y pb-0">
+        <div className="container-page">
+          <div className="relative aspect-[16/7] overflow-hidden rounded-xl2 border border-line bg-soft">
+            <Image
+              src={item.image}
+              alt={item.title}
+              fill
+              priority
+              sizes="(max-width: 1200px) 100vw, 1200px"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
       <section className="section-y">
         <div className="container-page grid gap-12 lg:grid-cols-3">
           <div className="space-y-10 lg:col-span-2">
-            <div>
-              <h2 className="mb-3 text-xl font-semibold text-ink">Tantangan</h2>
-              <p className="leading-relaxed text-muted">{item.problem}</p>
-            </div>
-            <div>
-              <h2 className="mb-3 text-xl font-semibold text-ink">Solusi</h2>
-              <p className="leading-relaxed text-muted">{item.solution}</p>
-            </div>
-            <div>
-              <h2 className="mb-3 text-xl font-semibold text-ink">Hasil</h2>
-              <p className="leading-relaxed text-muted">{item.result}</p>
-            </div>
+            <div><h2 className="mb-3 text-xl font-semibold text-ink">Tantangan</h2><p className="leading-relaxed text-muted">{item.problem}</p></div>
+            <div><h2 className="mb-3 text-xl font-semibold text-ink">Solusi</h2><p className="leading-relaxed text-muted">{item.solution}</p></div>
+            <div><h2 className="mb-3 text-xl font-semibold text-ink">Hasil</h2><p className="leading-relaxed text-muted">{item.result}</p></div>
           </div>
 
           <aside className="space-y-6">
             <div className="rounded-xl2 border border-line bg-soft p-6">
               <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">Modul</h3>
-              <ul className="space-y-1.5 text-sm text-ink">
-                {item.modules.map((m) => (
-                  <li key={m}>{m}</li>
-                ))}
-              </ul>
+              <ul className="space-y-1.5 text-sm text-ink">{item.modules.map((m) => <li key={m}>{m}</li>)}</ul>
             </div>
             <div className="rounded-xl2 border border-line bg-soft p-6">
               <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">Teknologi</h3>
-              <div className="flex flex-wrap gap-2">
-                {item.technology.map((t) => (
-                  <span key={t} className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">
-                    {t}
-                  </span>
-                ))}
-              </div>
+              <div className="flex flex-wrap gap-2">{item.technology.map((t) => <span key={t} className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">{t}</span>)}</div>
             </div>
-            <Link
-              href="/contact"
-              className="flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white hover:bg-cobalt"
-            >
-              Diskusikan Proyek Serupa
-              <ArrowRight size={16} />
-            </Link>
+            <Link href="/contact" className="flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white hover:bg-cobalt">Diskusikan Proyek Serupa<ArrowRight size={16} /></Link>
           </aside>
         </div>
       </section>
