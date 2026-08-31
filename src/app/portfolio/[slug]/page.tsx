@@ -6,16 +6,20 @@ import { portfolio, getPortfolioBySlug } from "@/content/portfolio";
 import ProjectPreview from "@/components/portfolio/ProjectPreview";
 import ProjectInterfaceGallery from "@/components/portfolio/ProjectInterfaceGallery";
 
+type Props = { params: Promise<{ slug: string }> };
+
 export function generateStaticParams() { return portfolio.map((p) => ({ slug: p.slug })); }
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const item = getPortfolioBySlug(params.slug); if (!item) return {};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const item = getPortfolioBySlug(slug); if (!item) return {};
   return { title: item.title, description: item.problem };
 }
 
 const privacyNote = "Interface shown is based on the implemented system. Operational data displayed has been anonymized or replaced with demonstration data to protect client confidentiality.";
 
-export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
-  const item = getPortfolioBySlug(params.slug); if (!item) notFound();
+export default async function PortfolioDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const item = getPortfolioBySlug(slug); if (!item) notFound();
   return <>
     <section className="border-b border-line bg-soft"><div className="container-page py-9 sm:py-12 lg:py-20">
       <div className="mb-4 flex flex-wrap items-center gap-2.5"><span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-accent">Real Project</span><span className="rounded-full border border-line bg-white px-3 py-1 text-xs font-medium text-muted">{item.availability}</span></div>

@@ -16,13 +16,32 @@ interface ContactPayload {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function clean(value: unknown, maxLength: number): string {
+  return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
+}
+
+function parsePayload(value: unknown): ContactPayload {
+  const input = value && typeof value === "object" ? value as Record<string, unknown> : {};
+  return {
+    name: clean(input.name, 100),
+    company: clean(input.company, 120),
+    email: clean(input.email, 254),
+    whatsapp: clean(input.whatsapp, 40),
+    needType: clean(input.needType, 100),
+    budget: clean(input.budget, 80),
+    message: clean(input.message, 4000),
+    website: clean(input.website, 200),
+    elapsedMs: typeof input.elapsedMs === "number" && Number.isFinite(input.elapsedMs) ? input.elapsedMs : undefined,
+  };
+}
+
 function validate(payload: ContactPayload): string | null {
-  if (!payload.name?.trim()) return "Nama wajib diisi.";
-  if (!payload.company?.trim()) return "Nama perusahaan wajib diisi.";
-  if (!payload.email?.trim() || !EMAIL_RE.test(payload.email)) return "Email tidak valid.";
-  if (!payload.whatsapp?.trim()) return "Nomor WhatsApp wajib diisi.";
-  if (!payload.needType?.trim()) return "Jenis kebutuhan wajib dipilih.";
-  if (!payload.message?.trim() || payload.message.trim().length < 10)
+  if (!payload.name) return "Nama wajib diisi.";
+  if (!payload.company) return "Nama perusahaan wajib diisi.";
+  if (!payload.email || !EMAIL_RE.test(payload.email)) return "Email tidak valid.";
+  if (!payload.whatsapp) return "Nomor WhatsApp wajib diisi.";
+  if (!payload.needType) return "Jenis kebutuhan wajib dipilih.";
+  if (!payload.message || payload.message.length < 10)
     return "Pesan terlalu singkat. Mohon jelaskan kebutuhan Anda lebih detail.";
   return null;
 }
@@ -38,7 +57,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const payload = (await req.json()) as ContactPayload;
+    const payload = parsePayload(await req.json());
 
     if (payload.website) {
       return NextResponse.json({ ok: true });
@@ -66,12 +85,14 @@ export async function POST(req: NextRequest) {
     }
 
     const resend = new Resend(apiKey);
+    const safeCompany = payload.company.replace(/[\r\n]+/g, " ");
+    const safeNeedType = payload.needType.replace(/[\r\n]+/g, " ");
 
     const { error } = await resend.emails.send({
       from: fromEmail,
       to: toEmail,
       reply_to: payload.email,
-      subject: `[Lead Baru] ${payload.company} — ${payload.needType}`,
+      subject: `[Lead Baru] ${safeCompany} — ${safeNeedType}`,
       text: [
         `Nama: ${payload.name}`,
         `Perusahaan: ${payload.company}`,

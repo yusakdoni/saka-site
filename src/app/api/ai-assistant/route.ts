@@ -2,6 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAssistantReply, type ChatMessage } from "@/lib/ai-assistant";
 import { isRateLimited } from "@/lib/rate-limit";
 
+function parseMessages(value: unknown): ChatMessage[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((message): message is Record<string, unknown> => Boolean(message) && typeof message === "object")
+    .map((message) => ({
+      role: message.role === "assistant" ? "assistant" as const : "user" as const,
+      content: typeof message.content === "string" ? message.content.trim().slice(0, 2000) : "",
+    }))
+    .filter((message) => message.content.length > 0)
+    .slice(-10);
+}
+
 export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
@@ -10,13 +23,13 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const messages: ChatMessage[] = Array.isArray(body?.messages) ? body.messages : [];
+    const messages = parseMessages(body?.messages);
 
     if (messages.length === 0) {
       return NextResponse.json({ error: "Pesan kosong." }, { status: 400 });
     }
 
-    const result = await getAssistantReply(messages.slice(-10));
+    const result = await getAssistantReply(messages);
     return NextResponse.json(result);
   } catch (err) {
     console.error("AI assistant route error:", err);

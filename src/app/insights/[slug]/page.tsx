@@ -5,18 +5,22 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { articles, getArticleBySlug } from "@/content/insights";
 
+type Props = { params: Promise<{ slug: string }> };
+
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const article = getArticleBySlug(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getArticleBySlug(slug);
   if (!article) return {};
   return { title: article.title, description: article.excerpt };
 }
 
-export default function ArticleDetailPage({ params }: { params: { slug: string } }) {
-  const article = getArticleBySlug(params.slug);
+export default async function ArticleDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const article = getArticleBySlug(slug);
   if (!article) notFound();
 
   const date = new Date(article.publishedAt).toLocaleDateString("id-ID", {
