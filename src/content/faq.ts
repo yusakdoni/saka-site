@@ -17,7 +17,7 @@ export const generalFaq = [
   {
     question: "Apakah SAKA menangani kebutuhan di luar keahlian internal, seperti cybersecurity?",
     answer:
-      "Untuk kebutuhan spesialis seperti cybersecurity, cloud, atau jaringan kompleks, SAKA bekerja sama dengan mitra terverifikasi, dengan SAKA tetap menjadi satu titik kontak untuk solusi dan proyek Anda.",
+      "Kebutuhan spesialis seperti cybersecurity, cloud, atau jaringan kompleks akan diidentifikasi sejak awal. Jika dibutuhkan pihak spesialis atau vendor eksternal, opsi tersebut akan dibahas secara transparan bersama klien sebelum masuk ke cakupan proyek.",
   },
 ] as const;
 
@@ -40,7 +40,7 @@ export const aiAssistantFallbackFaq = [
   {
     keywords: ["ai", "otomasi", "automation", "chatbot"],
     answer:
-      "SAKA merancang otomasi proses bisnis dan AI agent yang terhubung dengan sistem yang sudah Anda pakai, seperti WhatsApp dan CRM. Lihat halaman Layanan > AI & Business Automation.",
+      "SAKA merancang otomasi proses bisnis dan AI agent yang dapat diintegrasikan dengan sistem yang relevan sesuai kebutuhan proyek. Lihat halaman Layanan > AI & Business Automation.",
   },
   {
     keywords: ["harga", "biaya", "price", "budget"],
