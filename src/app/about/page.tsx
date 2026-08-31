@@ -15,17 +15,17 @@ const principles = [
   {
     title: "Lean & AI-Assisted",
     description:
-      "Kami menjaga struktur tetap ramping dan memanfaatkan AI untuk mempercepat delivery, sehingga biaya tetap efisien tanpa mengorbankan kualitas.",
+      "Kami menjaga struktur tetap ramping dan memanfaatkan AI untuk mempercepat delivery, sehingga proses kerja tetap efisien tanpa mengorbankan standar kualitas.",
   },
   {
-    title: "Partner Ecosystem",
+    title: "Specialist Scope Management",
     description:
-      "Untuk kebutuhan spesialis seperti cybersecurity dan infrastruktur kompleks, kami bekerja dengan mitra terverifikasi — dengan SAKA tetap menjadi satu titik tanggung jawab.",
+      "Untuk kebutuhan spesialis seperti cybersecurity, cloud, atau infrastruktur kompleks, kebutuhan tersebut dipetakan sejak awal. Jika memerlukan pihak spesialis atau vendor eksternal, opsi dan tanggung jawabnya dibahas transparan bersama klien.",
   },
   {
     title: "Transparan & Bertanggung Jawab",
     description:
-      "Kami tidak membesar-besarkan kapasitas atau hasil. Setiap klaim yang kami buat didukung oleh pekerjaan nyata.",
+      "Kami tidak membesar-besarkan kapasitas atau hasil. Informasi proyek dan kapabilitas disampaikan sesuai implementasi dan ruang lingkup yang dapat dipertanggungjawabkan.",
   },
 ];
 
@@ -55,8 +55,9 @@ export default function AboutPage() {
               dan terukur.
             </p>
             <p className="leading-relaxed text-muted">
-              Kami beroperasi secara lean dan memanfaatkan AI untuk mempercepat proses delivery, serta
-              bekerja sama dengan jaringan mitra spesialis untuk kebutuhan teknis yang lebih kompleks.
+              Kami beroperasi secara lean dan memanfaatkan AI untuk membantu mempercepat proses
+              analisis, pengembangan, dokumentasi, dan delivery. Kebutuhan yang berada di luar scope
+              utama akan dipetakan dan dibahas transparan sebelum masuk ke cakupan proyek.
             </p>
           </div>
           <div>
