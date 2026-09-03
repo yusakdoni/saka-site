@@ -24,6 +24,20 @@ export default function AIAssistant() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const text = input.trim();
@@ -51,15 +65,26 @@ export default function AIAssistant() {
 
   return (
     <>
-      <button type="button" onClick={() => setOpen((v) => !v)} aria-label={open ? "Tutup asisten" : "Buka asisten SAKA"} className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-lg transition-transform hover:scale-105">
-        {open ? <X size={22} /> : <MessageCircle size={22} />}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-label={open ? "Tutup asisten" : "Buka asisten SAKA"}
+        aria-expanded={open}
+        className="fixed bottom-[calc(env(safe-area-inset-bottom)+1rem)] right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-white shadow-lg transition-transform hover:scale-105 sm:bottom-5 sm:right-5 sm:h-14 sm:w-14"
+      >
+        {open ? <X size={21} /> : <MessageCircle size={21} />}
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-5 z-50 flex h-[70vh] max-h-[520px] w-[92vw] max-w-sm flex-col overflow-hidden rounded-xl2 border border-line bg-white shadow-2xl">
-          <div className="border-b border-line bg-navy px-5 py-4 text-white">
-            <p className="text-sm font-semibold">Asisten SAKA</p>
-            <p className="text-xs text-white/60">Biasanya membalas dalam hitungan detik</p>
+        <div className="fixed inset-0 z-[70] flex flex-col bg-white sm:inset-auto sm:bottom-24 sm:right-5 sm:h-[70vh] sm:max-h-[520px] sm:w-[92vw] sm:max-w-sm sm:overflow-hidden sm:rounded-xl2 sm:border sm:border-line sm:shadow-2xl">
+          <div className="flex items-center justify-between border-b border-line bg-navy px-5 pb-4 pt-[calc(env(safe-area-inset-top)+1rem)] text-white sm:py-4">
+            <div>
+              <p className="text-sm font-semibold">Asisten SAKA</p>
+              <p className="text-xs text-white/60">Biasanya membalas dalam hitungan detik</p>
+            </div>
+            <button type="button" onClick={() => setOpen(false)} aria-label="Tutup asisten" className="grid h-11 w-11 place-items-center rounded-full text-white transition hover:bg-white/10 sm:hidden">
+              <X size={22} />
+            </button>
           </div>
 
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
@@ -69,9 +94,9 @@ export default function AIAssistant() {
             {loading && <div className="flex w-fit items-center gap-2 rounded-lg bg-soft px-3.5 py-2.5 text-sm text-muted"><Loader2 size={14} className="animate-spin" />Mengetik...</div>}
           </div>
 
-          <form onSubmit={handleSubmit} className="flex gap-2 border-t border-line p-3">
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Tulis pesan..." className="flex-1 rounded-full border border-line px-4 py-2 text-sm focus:border-accent focus:outline-none" />
-            <button type="submit" disabled={loading || !input.trim()} aria-label="Kirim" className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-white disabled:opacity-50"><Send size={16} /></button>
+          <form onSubmit={handleSubmit} className="flex gap-2 border-t border-line px-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] pt-3 sm:p-3">
+            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Tulis pesan..." className="min-w-0 flex-1 rounded-full border border-line px-4 py-2.5 text-base focus:border-accent focus:outline-none sm:text-sm" />
+            <button type="submit" disabled={loading || !input.trim()} aria-label="Kirim" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-white disabled:opacity-50"><Send size={17} /></button>
           </form>
         </div>
       )}
