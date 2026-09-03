@@ -16,8 +16,12 @@ export default function Header() {
   }, [pathname]);
 
   useEffect(() => {
-    const previous = document.body.style.overflow;
-    if (open) document.body.style.overflow = "hidden";
+    if (!open) return;
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
@@ -25,7 +29,8 @@ export default function Header() {
 
     window.addEventListener("keydown", closeOnEscape);
     return () => {
-      document.body.style.overflow = previous;
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
       window.removeEventListener("keydown", closeOnEscape);
     };
   }, [open]);
@@ -33,7 +38,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-[100] border-b border-line bg-white/95 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between lg:h-20">
-        <Link href="/" className="relative z-[102] flex min-w-0 items-center gap-2" aria-label={site.shortName} onClick={() => setOpen(false)}>
+        <Link href="/" className="flex min-w-0 items-center gap-2" aria-label={site.shortName} onClick={() => setOpen(false)}>
           <Logo className="h-8 w-auto sm:h-9 lg:h-10" />
         </Link>
 
@@ -51,7 +56,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="relative z-[102] grid h-11 w-11 shrink-0 touch-manipulation place-items-center rounded-full border border-line bg-white text-ink lg:hidden"
+          className="grid h-11 w-11 shrink-0 touch-manipulation place-items-center rounded-full border border-line bg-white text-ink lg:hidden"
           aria-label={open ? "Tutup menu" : "Buka menu"}
           aria-expanded={open}
           aria-controls="mobile-navigation"
@@ -61,30 +66,44 @@ export default function Header() {
         </button>
       </div>
 
-      <div
-        id="mobile-navigation"
-        aria-hidden={!open}
-        className={`fixed inset-0 z-[101] bg-white transition-opacity duration-200 lg:hidden ${open ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0"}`}
-      >
-        <div className="h-16 border-b border-line lg:h-20" />
-        <nav className="container-page flex h-[calc(100dvh-4rem)] flex-col overflow-y-auto py-5" aria-label="Navigasi mobile">
-          <div className="space-y-1">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={`flex min-h-14 touch-manipulation items-center rounded-xl px-4 py-3 text-base font-semibold transition-colors ${pathname === item.href ? "bg-soft text-accent" : "text-ink active:bg-soft"}`}
-              >
-                {item.label}
-              </Link>
-            ))}
+      {open && (
+        <div id="mobile-navigation" className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-white lg:hidden" role="dialog" aria-modal="true" aria-label="Menu navigasi">
+          <div className="flex h-16 shrink-0 items-center justify-between border-b border-line bg-white px-5 sm:px-6">
+            <Link href="/" aria-label={site.shortName} onClick={() => setOpen(false)}>
+              <Logo className="h-8 w-auto sm:h-9" />
+            </Link>
+            <button
+              type="button"
+              className="grid h-11 w-11 shrink-0 touch-manipulation place-items-center rounded-full border border-line bg-white text-ink"
+              aria-label="Tutup menu"
+              onClick={() => setOpen(false)}
+            >
+              <X size={23} />
+            </button>
           </div>
-          <Link href="/contact" onClick={() => setOpen(false)} className="mt-5 inline-flex min-h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white">
-            Hubungi Kami <ArrowRight size={16} />
-          </Link>
-        </nav>
-      </div>
+
+          <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain bg-white px-5 py-6 sm:px-6" aria-label="Navigasi mobile">
+            <div className="space-y-2">
+              {nav.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className={`flex min-h-14 touch-manipulation items-center rounded-xl px-4 py-3 text-base font-semibold transition-colors ${pathname === item.href ? "bg-soft text-accent" : "text-ink active:bg-soft"}`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-auto pt-6 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+              <Link href="/contact" onClick={() => setOpen(false)} className="inline-flex min-h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white">
+                Hubungi Kami <ArrowRight size={16} />
+              </Link>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
