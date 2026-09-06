@@ -4,7 +4,7 @@ export const site = {
   domain: "sakasolution.com",
   url: "https://www.sakasolution.com",
   tagline: "Smart Solutions. Real Impact.",
-  description: "Jasa pembuatan website perusahaan, sistem ERP, dashboard bisnis, software custom, integrasi sistem, dan otomatisasi AI untuk membantu bisnis bekerja lebih rapi dan efisien.",
+  description: "Business system dan ERP, business intelligence, data analytics, workflow automation, dan AI untuk membantu bisnis bekerja lebih rapi, terlihat, dan efisien.",
   locale: "id-ID",
   contact: { email: "contact@sakasolution.com", whatsapp: "08113344410", whatsappLink: "628113344410", address: "Tangerang, Indonesia" },
   socials: { linkedin: "https://www.linkedin.com/company/sakasolution", instagram: "https://www.instagram.com/saka.company" },
