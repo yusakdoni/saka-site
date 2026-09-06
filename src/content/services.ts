@@ -108,7 +108,7 @@ export const services: Service[] = [
           "Kami merekomendasikan deployment di Vercel. Biaya hosting dan domain terpisah dari biaya pengembangan, kecuali disepakati lain dalam SOW.",
       },
     ],
-    featured: true,
+    featured: false,
   },
   {
     slug: "business-intelligence",
